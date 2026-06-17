@@ -21,19 +21,28 @@ This repository contains a complete Cisco Layer 2 Switch configuration lab imple
 
 ## Network Architecture Details
 
-| VLAN ID | VLAN Name | Network Purpose | Target Subnet (Logical) |
-| :--- | :--- | :--- | :--- |
-| **VLAN 10** | Management | Switch management and local admin access | 10.10.10.0/24 |
-| **VLAN 20** | Data_A | Department A user endpoint traffic | 10.10.20.0/24 |
-| **VLAN 30** | Data_B | Department B user endpoint traffic | 10.10.30.0/24 |
+The entire network infrastructure is configured within the major network boundary of **10.0.0.0/24**, demonstrating that Layer 2 security barriers (VLANs) can successfully isolate hosts even when they share the same logical IP subnet.
+
+| VLAN ID | VLAN Name | Network Purpose | Assigned IP Range / Subnet | Affected Hosts |
+| :--- | :--- | :--- | :--- | :--- |
+| **VLAN 10** | Data_A | Department A user endpoint traffic | 10.0.0.0/24 | PC1 (`10.0.0.1`), PC5 (`10.0.0.5`) |
+| **VLAN 20** | Data_B | Department B user endpoint traffic | 10.0.0.0/24 | PC2 (`10.0.0.2`), PC4 (`10.0.0.4`), PC6 (`10.0.0.6`) |
+| **VLAN 30** | Data_C | Department C user endpoint traffic | 10.0.0.0/24 | PC3 (`10.0.0.3`), PC7 (`10.0.0.7`) |
+
+---
+
+## Verification & Testing (ICMP Diagnostics)
+Traffic isolation and trunking state have been fully validated via Cisco IOS CLI and VPCS terminal outputs:
+* **Intra-VLAN Reachability (Success):** Continuous ICMP pings between hosts on the same VLAN (e.g., PC1 to PC5) exhibit 100% success rates with low latency, proving stable trunk transportation.
+* **Inter-VLAN Isolation (Success):** Pings attempted between different VLANs (e.g., PC1 to PC7, or PC3 to PC6) result in strict `host not reachable` drops, validating perfect Layer 2 traffic containment.
 
 ---
 
 ## Repository Structure
 * `/GNS3-Layer2-Trunking-Lab/Configurations`: Contains the clean, deployment-ready running configurations (`.txt`) for all three switches (`IOU1`, `IOU2`, `IOU3`).
-* `/GNS3-Layer2-Trunking-Lab/pings`: Includes the verified host-to-host ICMP ping validation screenshot (`ping-results-and-vlan-isolation.png.png`).
+* `/GNS3-Layer2-Trunking-Lab/pings`: Includes the verified host-to-host ICMP ping validation screenshot (`ping-results-and-vlan-isolation.png`).
 * `GNS3-Layer2-Trunking-Lab/topology.png`: The network architecture and device interconnection blueprint from GNS3 (displayed above).
-* `GNS3-Layer2-Trunking-Lab/show-interfaces-trunk-results.png.png`: Verified CLI output screenshot displaying operational trunk links and allowed VLANs.
+* `GNS3-Layer2-Trunking-Lab/show-interfaces-trunk-results.png`: Verified CLI output screenshot displaying operational trunk links and allowed VLANs.
 
 ---
 
