@@ -13,28 +13,28 @@ This repository contains a complete Cisco Layer 2 Switch configuration lab imple
 
 ### Key Technical Concepts Implemented:
 * **802.1Q Trunking:** Configured on inter-switch links to allow seamless traffic transport for multiple VLANs across the core switch backbone.
-* **VLAN Database Integrity:** Proper implementation of local VLAN databases on each switch ensuring ports map seamlessly without operational downtime.
+* **VLAN Database Segmentation:** Proper implementation of local VLAN databases (VLAN 10, 20, and 30) ensuring proper switch port mapping.
 * **Rapid Spanning Tree Protocol (Rapid-PVST):** Enabled globally to prevent Layer 2 loops and ensure faster convergence across the switching infrastructure.
-* **Traffic Isolation & Security:** Verified strict segmentation where hosts within the same VLAN communicate successfully (End-to-End reachability), while cross-VLAN traffic is completely blocked without a Layer 3 routing engine.
+* **Traffic Isolation & Security:** Verified strict segmentation where hosts within the same VLAN ID communicate successfully, while cross-VLAN traffic is completely blocked without a Layer 3 routing engine.
 
 ---
 
 ## Network Architecture Details
 
-The entire network infrastructure is configured within the major network boundary of **10.0.0.0/24**, demonstrating that Layer 2 security barriers (VLANs) can successfully isolate hosts even when they share the same logical IP subnet.
+The entire network infrastructure operates within the major network boundary of **10.0.0.0/24**, demonstrating that Layer 2 barriers (VLANs) successfully isolate traffic even when hosts share the exact same logical IP subnet.
 
-| VLAN ID | VLAN Name | Network Purpose | Assigned IP Range / Subnet | Affected Hosts |
-| :--- | :--- | :--- | :--- | :--- |
-| **VLAN 10** | Data_A | Department A user endpoint traffic | 10.0.0.0/24 | PC1 (`10.0.0.1`), PC5 (`10.0.0.5`) |
-| **VLAN 20** | Data_B | Department B user endpoint traffic | 10.0.0.0/24 | PC2 (`10.0.0.2`), PC4 (`10.0.0.4`), PC6 (`10.0.0.6`) |
-| **VLAN 30** | Data_C | Department C user endpoint traffic | 10.0.0.0/24 | PC3 (`10.0.0.3`), PC7 (`10.0.0.7`) |
+| VLAN ID | Network Purpose / Traffic Group | Assigned IP Range | Affected Hosts |
+| :--- | :--- | :--- | :--- |
+| **VLAN 10** | Isolated Layer 2 Broadcast Domain 10 | 10.0.0.0/24 | PC1 (`10.0.0.1`), PC5 (`10.0.0.5`) |
+| **VLAN 20** | Isolated Layer 2 Broadcast Domain 20 | 10.0.0.0/24 | PC2 (`10.0.0.2`), PC4 (`10.0.0.4`), PC6 (`10.0.0.6`) |
+| **VLAN 30** | Isolated Layer 2 Broadcast Domain 30 | 10.0.0.0/24 | PC3 (`10.0.0.3`), PC7 (`10.0.0.7`) |
 
 ---
 
 ## Verification & Testing (ICMP Diagnostics)
-Traffic isolation and trunking state have been fully validated via Cisco IOS CLI and VPCS terminal outputs:
-* **Intra-VLAN Reachability (Success):** Continuous ICMP pings between hosts on the same VLAN (e.g., PC1 to PC5) exhibit 100% success rates with low latency, proving stable trunk transportation.
-* **Inter-VLAN Isolation (Success):** Pings attempted between different VLANs (e.g., PC1 to PC7, or PC3 to PC6) result in strict `host not reachable` drops, validating perfect Layer 2 traffic containment.
+Traffic isolation and trunking states have been fully validated via Cisco IOS CLI and VPCS terminal outputs:
+* **Intra-VLAN Reachability (Success):** Continuous ICMP pings between hosts sharing the same VLAN ID (e.g., PC1 to PC5) exhibit 100% success rates, proving stable trunk transportation across switches.
+* **Inter-VLAN Isolation (Success):** Pings attempted between different VLAN IDs (e.g., PC1 to PC7, or PC3 to PC6) result in strict `host not reachable` drops, validating absolute Layer 2 traffic containment.
 
 ---
 
